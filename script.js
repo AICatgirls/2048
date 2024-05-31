@@ -9,16 +9,54 @@ document.addEventListener('DOMContentLoaded', () => {
         scoreDisplay.textContent = score; // Update the score display
     };
 
-    const drawBoard = () => {
-        container.innerHTML = '';
-        tiles.forEach(tile => {
-            const tileElement = document.createElement('div');
-            tileElement.textContent = tile > 0 ? tile : '';
-            tileElement.className = 'tile';
-            tileElement.style.backgroundColor = tile > 0 ? `#${Math.log2(tile) * 3 % 16}c8c8c` : '#cdc1b4';
-            container.appendChild(tileElement);
-        });
-    };
+	function setImage(tileElement, tile) {
+		const imagePath = `${tile}.gif`;
+		const testImage = new Image();
+		testImage.onload = () => {
+			tileElement.style.backgroundImage = `url('${imagePath}')`;
+			tileElement.style.backgroundColor = 'transparent'; // Ensure GIF visibility
+		};
+		testImage.onerror = () => {
+			// Fallback style if GIF fails to load
+			tileElement.style.backgroundImage = 'none';
+			tileElement.style.backgroundColor = getColor(tile); // Set color based on tile value
+			tileElement.textContent = tile > 0 ? tile : '';
+		};
+		testImage.src = imagePath;
+	}
+
+	function getColor(value) {
+		const colors = {
+			2: '#eee4da',
+			4: '#ede0c8',
+			8: '#f2b179',
+			16: '#f59563',
+			32: '#f67c5f',
+			64: '#f65e3b',
+			128: '#edcf72',
+			256: '#edcc61',
+			512: '#edc850',
+			1024: '#edc53f',
+			2048: '#edc22e',
+		};
+		return colors[value] || '#cdc1b4'; // Default color if value not listed
+	}
+
+	const drawBoard = () => {
+		container.innerHTML = '';
+		tiles.forEach(tile => {
+			const tileElement = document.createElement('div');
+			tileElement.className = 'tile';
+			if (tile > 0) {
+				setImage(tileElement, tile); // Set image or fallback to color and text
+			} else {
+				tileElement.style.backgroundImage = 'none';
+				tileElement.style.backgroundColor = '#cdc1b4'; // Color for empty tiles
+				tileElement.textContent = '';
+			}
+			container.appendChild(tileElement);
+		});
+	};
 
     const addTile = () => {
         let empty = tiles.flatMap((v, i) => v === 0 ? i : []);

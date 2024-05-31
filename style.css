@@ -28,6 +28,7 @@ body {
     justify-content: center;
     align-items: center;
     background-color: #bcaaa4;
+    background-size: cover; /* Ensures the GIF covers the whole tile */
     color: #fff;
     font-size: 30px;
     font-weight: bold;
