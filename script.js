@@ -156,6 +156,10 @@ document.addEventListener('DOMContentLoaded', () => {
 					alert('Game Over! No more moves possible.');
 				}
 			}
+		} else {
+			if (!checkAvailableMoves()) {
+				alert('Game Over! No more moves possible.');
+			}
 		}
 		drawBoard();
 	};
