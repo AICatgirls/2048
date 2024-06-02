@@ -3,11 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const scoreDisplay = document.getElementById('score');
     let tiles = new Array(16).fill(0);
 	let score = 0;
-	
-    const updateScore = (value) => {
-        score += value;
-        scoreDisplay.textContent = score; // Update the score display
-    };
 
 	function setImage(tileElement, tile) {
 		const imagePath = `${tile}.gif`;
@@ -82,11 +77,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 const combinedValue = row[i] * 2;
                 row[i] = combinedValue;
 				row[i + 1] = 0; // Set the second tile to zero
-                updateScore(combinedValue); // Update score when tiles combine
+				updateScore(combinedValue); // Update score when tiles combine
+				playSound(combinedValue); // Play sound corresponding to the new tile value
 				i++; // Increment i to skip the next tile after merging
 			}
 		}
 		return row;
+	};
+	
+    const updateScore = (value) => {
+        score += value;
+        scoreDisplay.textContent = score; // Update the score display
+    };
+	
+	const playSound = (value) => {
+		const sound = new Audio(`${value}.wav`);
+		sound.play();
 	};
 	
 	const checkAvailableMoves = () => {
